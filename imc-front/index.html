@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de IMC</title>
+</head>
+<body>
+  <h1>Calculadora de IMC</h1>
+  <label>Peso (kg): <input type="number" id="peso"></label><br><br>
+  <label>Altura (m): <input type="number" step="0.01" id="altura"></label><br><br>
+  <button onclick="calcularIMC()">Calcular</button>
+  <p id="resultado"></p>
+
+  <script>
+    async function calcularIMC() {
+      const peso = parseFloat(document.getElementById("peso").value);
+      const altura = parseFloat(document.getElementById("altura").value);
+
+      const response = await fetch('http://localhost:5000/imc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ peso, altura })
+      });
+
+      const resultado = await response.json();
+      document.getElementById("resultado").innerText = 
+        `IMC: ${resultado.imc.toFixed(2)} (${resultado.classificacao})`;
+    }
+  </script>
+</body>
+</html>
